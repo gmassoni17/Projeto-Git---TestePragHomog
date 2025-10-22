@@ -98,6 +98,22 @@ hpd_labels <- tibble(idx = as.double(1:nrow(dados)),
                     z = as.double(rep(NA, nrow(dados))))
 hpd_grid = NULL
 
+
+######## Grid de theta "inteligente" ###################
+# gerar em um "retângulo" menor do que (0,1]^2 - onde se concentra a densidade post.
+
+min <- 0
+max <- 0.2
+thetas <- seq(min, max, length.out = N) # grid de thetas
+## criar grid com todas as combinações de k thetas
+aux <- expand_grid(thetas, thetas)
+for(i in 3:(k)){
+  aux <- expand_grid(aux, thetas)
+  names(aux) <- glue('theta{1:i}')
+}
+grid_thetas <- aux
+grid_thetas
+
 start <- Sys.time()
 for(ii in 1:nrow(dados)){
   counts <- dados[ii,]
